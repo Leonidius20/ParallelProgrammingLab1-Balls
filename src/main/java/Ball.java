@@ -11,7 +11,6 @@ class Ball {
     private int dx = 2;
     private int dy = 2;
 
-
     public Ball(Component c) {
         this.canvas = c;
 
@@ -23,10 +22,6 @@ class Ball {
             x = 0;
             y = new Random().nextInt(this.canvas.getHeight());
         }
-    }
-
-    public static void f() {
-        int a = 0;
     }
 
     public void draw(Graphics2D g2) {
@@ -56,4 +51,14 @@ class Ball {
         }
         this.canvas.repaint();
     }
+
+    public boolean isInHole() {
+        return (x < 20 || x > this.canvas.getWidth() - 30)
+                && (y < 20 || y > this.canvas.getHeight() - 30);
+    }
+
+    public void remove() {
+        ((BallCanvas)canvas).remove(this);
+    }
+
 }
