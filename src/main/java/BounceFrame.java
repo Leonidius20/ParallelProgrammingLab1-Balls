@@ -42,10 +42,34 @@ public class BounceFrame extends JFrame {
 
         buttonStart1000.addActionListener(e -> {
 
-            for (int i = 0; i < 1000; i++) {
-                createBlueBall();
-            }
-            createRedBall();
+            Ball b = new Ball(canvas, Color.RED);
+            canvas.add(b);
+
+            BallThread thread = new BallThread(b, onBallInHole);
+            thread.setPriority(8); // the default is 5
+            thread.start();
+
+            Ball b2 = new Ball(canvas, Color.BLUE);
+            canvas.add(b2);
+
+            Thread blueBallThread = new Thread(() -> {
+                try {
+                    thread.join();
+                    for (int i = 1; i < 10000; i++) {
+                        b2.move();
+                        Thread.sleep(5);
+                        if (b2.isInHole()) {
+                            onBallInHole.onBallInHole();
+                            b2.remove();
+                            return; // stopping the thread
+                        }
+                    }
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();// set the interrupted flag
+                }
+            });
+
+            blueBallThread.start();
         });
 
         buttonStop.addActionListener(e -> System.exit(0));
