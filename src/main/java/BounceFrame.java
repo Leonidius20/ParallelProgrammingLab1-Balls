@@ -1,17 +1,15 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class BounceFrame extends JFrame {
-    private BallCanvas canvas;
+    private final BallCanvas canvas;
     public static final int WIDTH = 450;
     public static final int HEIGHT = 350;
 
-    private JTextField textField;
+    private final JTextField textField;
 
-    private AtomicInteger  destroyedBalls = new AtomicInteger(0);
+    private final AtomicInteger destroyedBalls = new AtomicInteger(0);
 
     private final BallThread.OnBallInHole onBallInHole = new BallThread.OnBallInHole() {
 
@@ -33,36 +31,37 @@ public class BounceFrame extends JFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(Color.lightGray);
         JButton buttonStart = new JButton("Start");
+        JButton buttonStart1000 = new JButton("Start 1000");
         JButton buttonStop = new JButton("Stop");
 
-        buttonStart.addActionListener(new ActionListener() {
+        buttonStart.addActionListener(e -> createBall());
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                Ball b = new Ball(canvas);
-                canvas.add(b);
-
-                BallThread thread = new BallThread(b, onBallInHole);
-                thread.start();
-                System.out.println("Thread name = " +
-                        thread.getName());
+        buttonStart1000.addActionListener(e -> {
+            for (int i = 0; i < 1000; i++) {
+                createBall();
             }
         });
-        buttonStop.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-                System.exit(0);
-            }
-        });
+        buttonStop.addActionListener(e -> System.exit(0));
 
         textField = new JTextField("Destroyed 0 balls");
 
         buttonPanel.add(buttonStart);
+        buttonPanel.add(buttonStart1000);
         buttonPanel.add(buttonStop);
         buttonPanel.add(textField);
 
         content.add(buttonPanel, BorderLayout.SOUTH);
     }
+
+    public void createBall() {
+        Ball b = new Ball(canvas);
+        canvas.add(b);
+
+        BallThread thread = new BallThread(b, onBallInHole);
+        thread.start();
+        System.out.println("Thread name = " +
+                thread.getName());
+    }
+
 }
