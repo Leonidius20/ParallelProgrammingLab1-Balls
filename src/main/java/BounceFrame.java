@@ -30,23 +30,30 @@ public class BounceFrame extends JFrame {
         content.add(this.canvas, BorderLayout.CENTER);
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(Color.lightGray);
-        JButton buttonStart = new JButton("Start");
+
+        JButton buttonRed = new JButton("Red^ ball");
+        JButton buttonBlue = new JButton("Blue ball");
+
         JButton buttonStart1000 = new JButton("Start 1000");
         JButton buttonStop = new JButton("Stop");
 
-        buttonStart.addActionListener(e -> createBall());
+        buttonRed.addActionListener(e -> createRedBall());
+        buttonBlue.addActionListener(e -> createBlueBall());
 
         buttonStart1000.addActionListener(e -> {
+
             for (int i = 0; i < 1000; i++) {
-                createBall();
+                createBlueBall();
             }
+            createRedBall();
         });
 
         buttonStop.addActionListener(e -> System.exit(0));
 
         textField = new JTextField("Destroyed 0 balls");
 
-        buttonPanel.add(buttonStart);
+        buttonPanel.add(buttonRed);
+        buttonPanel.add(buttonBlue);
         buttonPanel.add(buttonStart1000);
         buttonPanel.add(buttonStop);
         buttonPanel.add(textField);
@@ -54,7 +61,7 @@ public class BounceFrame extends JFrame {
         content.add(buttonPanel, BorderLayout.SOUTH);
     }
 
-    public void createBall() {
+    /*public void createBall() {
         Ball b = new Ball(canvas);
         canvas.add(b);
 
@@ -62,6 +69,24 @@ public class BounceFrame extends JFrame {
         thread.start();
         System.out.println("Thread name = " +
                 thread.getName());
+    }*/
+
+    public void createRedBall() {
+        Ball b = new Ball(canvas, Color.RED);
+        canvas.add(b);
+
+        BallThread thread = new BallThread(b, onBallInHole);
+        thread.setPriority(8); // the default is 5
+        thread.start();
+    }
+
+    public void createBlueBall() {
+        Ball b = new Ball(canvas, Color.BLUE);
+        canvas.add(b);
+
+        BallThread thread = new BallThread(b, onBallInHole);
+        thread.setPriority(2);
+        thread.start();
     }
 
 }

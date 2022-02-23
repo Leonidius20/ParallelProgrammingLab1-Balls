@@ -1,5 +1,7 @@
+
 public class BallThread extends Thread {
-    private Ball b;
+
+    private final Ball b;
 
     private final OnBallInHole callback;
 
