@@ -21,9 +21,8 @@ public class Bounce {
         hyphen = new Thread(() -> {
             for (int i = 0; i < 100; i++) {
                 for (int j = 0; j < 10; j++) {
-                    ob.printHyphen();
+                    ob.printHyphen(j == 9);
                 }
-                System.out.println();
             }
         });
 
@@ -47,7 +46,7 @@ public class Bounce {
         notifyAll();
     }
 
-    public synchronized void printHyphen() {
+    public synchronized void printHyphen(boolean isLastInLine) {
         while (!flag) {
             try {
                 wait();
@@ -59,6 +58,7 @@ public class Bounce {
         flag = false;
 
         System.out.print("-");
+        if (isLastInLine) System.out.println();
         notifyAll();
     }
 }
