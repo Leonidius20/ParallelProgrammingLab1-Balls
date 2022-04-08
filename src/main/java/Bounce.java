@@ -1,37 +1,33 @@
-import org.w3c.dom.xpath.XPathResult;
+
 
 public class Bounce {
 
-    public boolean flag = false;
-
     public static void main(String[] args) throws InterruptedException {
 
-        boolean b = true;
+        Counter counter = new Counter();
 
-        Thread hyphen;
-
-        var ob = new Bounce();
-
-        var bar = new Thread(() -> {
-            for (int i = 0; i < 1000; i++) {
-                ob.printBar();
+        var incrementor = new Thread(() -> {
+            for (int i = 0; i < 100000; i++) {
+                counter.increment();
             }
         });
 
-        hyphen = new Thread(() -> {
-            for (int i = 0; i < 100; i++) {
-                for (int j = 0; j < 10; j++) {
-                    ob.printHyphen(j == 9);
-                }
+        var decrementor = new Thread(() -> {
+            for (int i = 0; i < 100000; i++) {
+                counter.decrement();
             }
         });
 
+        incrementor.start();
+        decrementor.start();
 
-        bar.start();
-        hyphen.start();
+        incrementor.join();
+        decrementor.join();
+
+        System.out.println(counter.get());
     }
 
-    public synchronized void printBar() {
+    /*public synchronized void printBar() {
         while (flag) {
             try {
                 wait();
@@ -60,5 +56,5 @@ public class Bounce {
         System.out.print("-");
         if (isLastInLine) System.out.println();
         notifyAll();
-    }
+    }*/
 }
