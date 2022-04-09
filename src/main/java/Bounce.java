@@ -8,13 +8,18 @@ public class Bounce {
 
         var incrementor = new Thread(() -> {
             for (int i = 0; i < 100000; i++) {
-                counter.increment();
+                synchronized (counter) {
+                    counter.increment();
+                }
             }
         });
 
         var decrementor = new Thread(() -> {
             for (int i = 0; i < 100000; i++) {
-                counter.decrement();
+                synchronized (counter) {
+                    counter.decrement();
+                }
+
             }
         });
 
