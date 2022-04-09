@@ -2,9 +2,9 @@ public class Counter {
 
     private int counter;
 
-    public void increment() { counter++; }
+    public synchronized void increment() { counter++; }
 
-    public void decrement() { counter--; }
+    public synchronized void decrement() { counter--; }
 
     public int get() { return counter; }
 
