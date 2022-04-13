@@ -1,27 +1,20 @@
-import org.w3c.dom.xpath.XPathResult;
-
-public class Bounce {
+public class Main {
 
     public boolean flag = false;
 
-    public static void main(String[] args) throws InterruptedException {
-
-        boolean b = true;
-
-        Thread hyphen;
-
-        var ob = new Bounce();
+    public static void main(String[] args) {
+        var instance = new Main();
 
         var bar = new Thread(() -> {
             for (int i = 0; i < 1000; i++) {
-                ob.printBar();
+                instance.printBar();
             }
         });
 
-        hyphen = new Thread(() -> {
+        var hyphen = new Thread(() -> {
             for (int i = 0; i < 100; i++) {
                 for (int j = 0; j < 10; j++) {
-                    ob.printHyphen(j == 9);
+                    instance.printHyphen(j == 9);
                 }
             }
         });
